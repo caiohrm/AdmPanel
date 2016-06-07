@@ -49,8 +49,13 @@ function init_painel(){
     
     set_tema('rodape','');
     set_tema('template','painel_view');
-    set_tema('headerinc',load_css(array('foundation.min','app')),FALSE);
-    set_tema('footerinc',load_js(array('foundation.min')),FALSE);
+    set_tema('headerinc',load_css(array('foundation.min',
+                                        'app',)),FALSE);
+    set_tema('footerinc',load_js(array(
+        'jquery-2.2.4',
+        'foundation.min',
+        'app',
+    )),FALSE);
 }
 
 //carrega um template passando o array $tema como parametro

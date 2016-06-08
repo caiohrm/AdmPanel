@@ -36,7 +36,8 @@ class Usuarios extends  CI_Controller{
                 $this->session->set_userdata($dados);
                 redirect('painel');
             else:
-                echo 'Login falhou';
+                set_msg('errologin','Usuário/Senha incorreto','erro');
+                redirect('usuarios/login');
             endif;
         endif;
 
@@ -53,13 +54,21 @@ class Usuarios extends  CI_Controller{
     public function login(){
         if(esta_logado(false)):
             redirect('painel');
+            $this->session->sess_destroy();
         else:
             $this->logar();
         endif;
     }
     
     public function deslogar(){
-        logout();
+        $this->session->set_userdata(array(
+            'user_id'=> '',
+            'user_nome'=>'',
+            'user_adm'=>'',
+            'user_logado'=>''
+        ));
+        set_msg('logoffok','Logoff efetuado com sucesso','success');
+        //logout();
         redirect('usuarios/login');
     }
 

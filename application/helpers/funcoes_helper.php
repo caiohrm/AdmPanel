@@ -141,3 +141,37 @@ function logout(){
         $CI->session->sess_destroy();
     endif;
 }
+
+//define uma mensagem para ser exibida na proxima tela
+function set_msg($id='msgerro',$msg=NULL,$tipo='erro'){
+    $CI =& get_instance();
+    switch ($tipo){
+        case 'erro':
+            $CI->session->set_flashdata($id,'<div class="alert callout"><p>'.$msg.'</p></div>');
+            break;
+        case 'success':
+            $CI->session->set_flashdata($id,'<div class="callout success">'.$msg.'</div>');
+            break;
+        default:
+            $CI->session->set_flashdata($id,'<div class="alert-box"><p>'.$msg.'</p></div>');
+            break;
+
+    }
+}
+
+//verifica se existe uma mensagem para ser exibida na tela atual
+function get_msg($id,$printar=TRUE){
+    $CI =& get_instance();
+    if($CI->session->flashdata($id)){
+
+        if($printar){
+            echo $CI->session->flashdata($id);
+            return true;
+        }else{
+            return $CI->session->flashdata($id);
+        }
+    }
+   // echo $_SESSION[$id];
+    return false;
+
+}

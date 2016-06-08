@@ -14,6 +14,9 @@ switch ($tela):
         echo form_open('usuarios/valida',array('class'=>'custom loginform'));
         echo form_fieldset('Identifique-se',array('class' => 'fieldset'));
         erros_validacao();
+        $CI =& get_instance();
+        get_msg('logoffok');
+        get_msg('errologin');
         echo form_label('Usuário');
         echo form_input(array('name'=>'usuario'),set_value('usuario'),'autofocus');
         echo form_label('Senha');

@@ -122,7 +122,6 @@ function esta_logado($redir=true){
     $CI->load->library('session');
     $user_status = $CI->session->userdata('user_logado');
     if(!isset($user_status) || $user_status !=TRUE):
-       // $CI->session->sess_destroy();
         if($redir):
             redirect('usuarios/login');
         else:
@@ -150,7 +149,7 @@ function set_msg($id='msgerro',$msg=NULL,$tipo='erro'){
             $CI->session->set_flashdata($id,'<div class="alert callout"><p>'.$msg.'</p></div>');
             break;
         case 'success':
-            $CI->session->set_flashdata($id,'<div class="callout success">'.$msg.'</div>');
+            $CI->session->set_flashdata($id,'<div class="success callout">'.$msg.'</div>');
             break;
         default:
             $CI->session->set_flashdata($id,'<div class="alert-box"><p>'.$msg.'</p></div>');

@@ -59,6 +59,40 @@ class Usuarios extends  CI_Controller{
             $this->logar();
         endif;
     }
+
+    public function nova_senha()
+    {
+        $this->form_validation->set_rules('email','E-MAIL','trim|required|valid_email|strtolower');
+        if($this->form_validation->run()) {
+            $email = $this->input->post('email', true);
+            $query = $this->usuarios->get_byemail($email);
+            if($query->num_rows()==1)
+            {
+                $novasenha= substr(str_shuffle('qwertyuiopasdfghjklzxcvbnm1234567890'),0,6);
+                $mensagem= "<p>Você solicitou uma nova de acesso ao painel de administração do site, a partir de agora use
+ a seguinte senha para acesso <strong>$novasenha</strong></p><p>Troque esta senha para uma senha segura e de sua preferência
+ o quanto antes.</p>";
+                if($this->sistema->enviar_email($email,'Nova senha de acesso',$mensagem))
+                {
+                    $dados['senha']=md5($novasenha);
+                    $this->usuarios->do_update($dados,array('email'=>$email),false);
+                    set_msg('msgok','Uma nova senha foi enviada para seu e-mail','success');
+                    redirect('usuarios/nova_senha');
+                }
+                else{
+                    set_msg('msgerro','Erro ao enviar nova senha, contate o administrador','erro');
+                    redirect('usuarios/nova_senha');
+                }
+            }else{
+                set_msg('msgerro','Este e-mail não possui cadastro no sistema','erro');
+                redirect('usuarios/nova_senha');
+            }
+        }
+        set_tema('titulo','Recuperar Senha');
+        set_tema('conteudo',load_modulo('usuarios','nova_senha'));
+        load_template();
+
+    }
     
     public function deslogar(){
         $this->session->set_userdata(array(
@@ -68,10 +102,9 @@ class Usuarios extends  CI_Controller{
             'user_logado'=>''
         ));
         set_msg('logoffok','Logoff efetuado com sucesso','success');
+        $this->session->sess_destroy();
+        $this->session->sess_create();
         //logout();
         redirect('usuarios/login');
     }
-
-
-
 }

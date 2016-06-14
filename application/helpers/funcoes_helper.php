@@ -123,6 +123,7 @@ function esta_logado($redir=true){
     $user_status = $CI->session->userdata('user_logado');
     if(!isset($user_status) || $user_status !=TRUE):
         if($redir):
+            set_msg('errologin','Acesso restrito faça login antes de prosseguir','erro');
             redirect('usuarios/login');
         else:
           return  FALSE;
@@ -172,5 +173,16 @@ function get_msg($id,$printar=TRUE){
     }
    // echo $_SESSION[$id];
     return false;
+}
+
+function is_admin($set_msg=FALSE){
+    $CI =& get_instance();
+    $user_admin = $CI->session->userdata('user_admin');
+    if(!isset($user_admin) || $user_admin != true){
+        if($set_msg)
+            set_msg('msg_erro','Seu usuário não tem permissão para executar essa operação','erro');
+        return false;
+    }
+    return true;
 
 }

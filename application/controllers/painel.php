@@ -26,6 +26,7 @@ class Painel extends  CI_Controller{
             set_tema('conteudo','<div class="columns medium-8 medium-centered"><p>Escolha um menu para iniciar</p></div>');
             load_template();
         else:
+        set_msg('errologin','Acesso restrito faça login antes de prosseguir','erro');
         redirect('usuarios/login');
         endif;
     }

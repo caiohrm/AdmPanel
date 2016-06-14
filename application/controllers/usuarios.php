@@ -103,8 +103,31 @@ class Usuarios extends  CI_Controller{
         ));
         set_msg('logoffok','Logoff efetuado com sucesso','success');
         $this->session->sess_destroy();
-        $this->session->sess_create();
         //logout();
         redirect('usuarios/login');
+    }
+
+    public function cadastrar(){
+        esta_logado();
+
+        $this->form_validation->set_rules('nome','NOME','trim|required|min_length[4]|ucwords');
+        $this->form_validation->set_rules('email','EMAIL','trim|required|valid_email|is_unique[usuarios.email]|strtolower');
+        $this->form_validation->set_rules('login','LOGIN','trim|required|min_length[4]|is_unique[usuarios.login]|strtolower');
+        $this->form_validation->set_rules('senha','SENHA','trim|required|min_length[4]|strtolower');
+        $this->form_validation->set_rules('senha2','REPITA SENHA','trim|required|min_length[4]|strtolower|matches[senha]');
+        if($this->form_validation->run()){
+            $dados=elements(array('nome','email','login'),$this->input->post());
+            $dados['senha']=md5($this->input->post('senha'));
+            if(!is_admin() && $this->input->post('admin')==1)
+            {
+                set_msg('msgerro','Apenas Administradores podem cadastrar novos administradores','erro');
+                return false;
+            }
+            $this->usuarios->do_insert($dados);
+        }
+        set_tema('titulo','Cadastro de usuários');
+        set_tema('conteudo',load_modulo('usuarios','cadastrar'));
+        load_template();
+
     }
 }

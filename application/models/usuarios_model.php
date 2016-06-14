@@ -48,6 +48,15 @@ public function do_login($usuario=NULL,$senha=NULL){
             redirect(current_url());
     }
 }
+    public function do_insert($dados=NULL,$redir=TRUE){
+        if($dados != null){
+            $this->db->insert('usuarios',$dados);
+            set_msg('msgok','Cadastro efetuado com sucesso','success');
+            if($redir) redirect(current_url());
+
+        }
+
+    }
 
 
 }

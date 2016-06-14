@@ -1,8 +1,12 @@
 .loginform {margin-top: 130px;}
 .alert p{margin: 0 !important;}
 input{ margin: 2px !important;}
-.fieldset {margin-top: 0 !important;}
+.fieldset {
+    margin-top: 0 !important;
+    padding: 1.5%;
+}
 
+.espaco{margin-right: 10px;}
 .no-js .top-bar {
     display: none;
 }

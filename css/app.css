@@ -6,7 +6,14 @@ input{ margin: 2px !important;}
     padding: 1.5%;
 }
 
-.espaco{margin-right: 10px;}
+
+
+.noleft{
+padding-left: 0px;
+}
+.noright{
+    padding-right: 0px;
+}
 .no-js .top-bar {
     display: none;
 }

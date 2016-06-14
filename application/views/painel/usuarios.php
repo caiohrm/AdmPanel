@@ -68,13 +68,17 @@ switch ($tela):
         echo form_input(array('name'=>'email'),set_value('email'));
         echo form_label('Login');
         echo form_input(array('name'=>'login'),set_value('login'));
+        echo '<div class="columns medium-6 noleft">';
         echo form_label('Senha');
         echo form_password(array('name'=>'senha'),set_value('senha'));
+        echo '</div>';
+        echo '<div class="columns medium-6 noright">';
         echo form_label('Repita a senha');
         echo form_password(array('name'=>'senha2'),set_value('senha2'));
+        echo '</div>';
         echo form_checkbox(array('name'=>'adm'),1).'Administrador<br /><br />';
-        echo anchor('usuarios/gerenciar','Cancelar',array('class'=>'button radius right alert espaco'));
         echo form_submit(array('name'=> 'cadastrar','class'=>'button radius'),'Salvar dados');
+        echo anchor('usuarios/gerenciar','Cancelar',array('class'=>'button radius right alert espaco'));
         echo form_fieldset_close();
         echo form_close();
         echo '</div>';

@@ -132,4 +132,51 @@ class Usuarios extends  CI_Controller{
         set_tema('conteudo',load_modulo('usuarios','cadastrar'));
         load_template();
     }
+
+    public function gerenciar(){
+        esta_logado();
+        set_tema('footerinc',load_js(array('datatables.min','table')),FALSE);
+        set_tema('titulo','Listagem de usuários');
+        set_tema('conteudo',load_modulo('usuarios','gerenciar'));
+        load_template();
+
+    }
+
+    public function alterar_senha()
+    {
+        esta_logado();
+        $this->form_validation->set_rules('senha','SENHA','trim|required|min_length[4]|strtolower');
+        $this->form_validation->set_rules('senha2','REPITA SENHA','trim|required|min_length[4]|strtolower|matches[senha]');
+        if($this->form_validation->run()) {
+            $dados['senha'] = md5($this->input->post('senha'));
+            $this->usuarios->do_update($dados, array('id' => $this->input->post('idusuario')));
+        }
+        set_tema('titulo','Alteração de senha');
+        set_tema('conteudo',load_modulo('usuarios','alterar_senha'));
+        load_template();
+
+    }
+
+    public function editar()
+    {
+        esta_logado();
+        $this->form_validation->set_rules('nome','NOME','trim|required|min_length[4]|ucwords');
+        if($this->form_validation->run()){
+            $dados['nome']=$this->input->post('nome');
+            $dados['ativo']=($this->input->post('ativo')==1 ? 1: 0);
+            if(!is_admin() && $this->input->post('adm')=='1')
+            {
+                set_msg('msgerro','Apenas Administradores podem cadastrar novos Administradores','erro');
+                set_tema('titulo','Cadastro de usuários');
+                set_tema('conteudo',load_modulo('usuarios','cadastrar'));
+                load_template();
+                return false;
+            }
+            $this->usuarios->do_update($dados,array('id'=>$this->input->post('idusuario')));
+        }
+        set_tema('titulo','Alteração de usuários');
+        set_tema('conteudo',load_modulo('usuarios','editar'));
+        load_template();
+
+    }
 }

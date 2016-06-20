@@ -40,6 +40,16 @@ public function do_login($usuario=NULL,$senha=NULL){
         endif;
     }
 
+    public function get_byid($id=NULL){
+        if($id!= null):
+            $this->db->where('id',$id);
+            $this->db->limit(1);
+            return $this->db->get('usuarios');
+        else:
+            return false;
+        endif;
+    }
+
     public function do_update($dados=NULL,$condicao=NULL,$redir=TRUE){
     if($dados!= NULL && is_array($condicao)){
         $this->db->update('usuarios',$dados,$condicao);
@@ -53,9 +63,12 @@ public function do_login($usuario=NULL,$senha=NULL){
             $this->db->insert('usuarios',$dados);
             set_msg('msgok','Cadastro efetuado com sucesso','success');
             if($redir) redirect(current_url());
-
         }
+    }
 
+    public function get_all()
+    {
+        return $this->db->get('usuarios');
     }
 
 

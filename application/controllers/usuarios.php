@@ -179,4 +179,31 @@ class Usuarios extends  CI_Controller{
         load_template();
 
     }
+
+    public function excluir()
+    {
+        esta_logado();
+        if(is_admin(TRUE)){
+            $iduser = $this->uri->segment(3);
+            echo $iduser;
+            if($iduser != null){
+                $query=$this->usuarios->get_byid($iduser);
+                if($query->num_rows()==1){
+                    $query = $query->row();
+                    if($query->id !=1){
+                        $this->usuarios->do_delete(array('id'=>$query->id),false);
+                    }else{
+                        set_msg('msgerro','Este usuário não pode ser excluido','erro');
+                    }
+                }else{
+                    set_msg('msgerro','Usuário não encontrado para exclusão','erro');
+                }
+            }else{
+                set_msg('msgerro','Escolha um usuário para excluir','erro');
+            }
+        }
+        redirect('usuarios/gerenciar');
+
+    }
+
 }

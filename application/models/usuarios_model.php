@@ -53,7 +53,11 @@ public function do_login($usuario=NULL,$senha=NULL){
     public function do_update($dados=NULL,$condicao=NULL,$redir=TRUE){
     if($dados!= NULL && is_array($condicao)){
         $this->db->update('usuarios',$dados,$condicao);
-        set_msg('msgok','Alteração efetuada com sucesso','success');
+        if($this->db->affected_rows()>0) {
+            set_msg('msgok', 'Alteração efetuada com sucesso', 'success');
+        }else{
+            set_msg('msgerro', 'Erro ao atualizar registro', 'erro');
+        }
         if($redir)
             redirect(current_url());
     }
@@ -61,7 +65,11 @@ public function do_login($usuario=NULL,$senha=NULL){
     public function do_insert($dados=NULL,$redir=TRUE){
         if($dados != null){
             $this->db->insert('usuarios',$dados);
-            set_msg('msgok','Cadastro efetuado com sucesso','success');
+            if($this->db->affected_rows()>0) {
+                set_msg('msgok','Cadastro efetuado com sucesso','success');
+            }else{
+                set_msg('msgerro', 'Erro ao inserir registro', 'erro');
+            }
             if($redir) redirect(current_url());
         }
     }
@@ -69,6 +77,19 @@ public function do_login($usuario=NULL,$senha=NULL){
     public function get_all()
     {
         return $this->db->get('usuarios');
+    }
+
+    public function do_delete($condicao=NULL,$redir=TRUE){
+        if($condicao!=null && is_array($condicao)){
+            $this->db->delete("usuarios",$condicao);
+            if($this->db->affected_rows()>0) {
+                set_msg('msgok', 'Regsitro excluido com sucesso', 'success');
+            }else{
+                set_msg('msgerro', 'Erro ao excluir registro', 'erro');
+            }
+            if($redir)redirect(current_url());
+        }
+
     }
 
 

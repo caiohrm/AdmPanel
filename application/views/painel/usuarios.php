@@ -24,6 +24,7 @@ switch ($tela):
         echo '<p>'.anchor('usuarios/nova_senha','Esqueci minha senha').'</p>';
         echo '</div>';
         echo '<div class="columns medium-4 text-right">';
+        echo form_hidden(array('hidden',$this->session->userdata('redir_para')));
         echo form_submit(array('name'=>'logar','class'=> 'button radius right'),'Login');
         echo '</div>';
         echo '</div>';
@@ -57,6 +58,7 @@ switch ($tela):
     case 'cadastrar':
         echo '<div class="row">';
         echo '<div class="columns medium-12">';
+        echo '<p>'.breadcrumb().'</p>';
         erros_validacao();
         get_msg('msgok');
         get_msg('msgerro');
@@ -94,7 +96,9 @@ switch ($tela):
             })
         </script>
         <div class="column row">
+
             <?php
+            echo '<p>'. breadcrumb() .'</p>';
             get_msg('msgok');
             get_msg('msgerro');
             ?>
@@ -136,6 +140,7 @@ switch ($tela):
         if($iduser == NULL)
             redirect('usuarios/gerenciar');
         echo '<div class="row">';
+        echo '<p>'.breadcrumb().'</p>';
         if(is_admin(true) || $iduser == $this->session->userdata('user_id')) {
             $query = $this->usuarios->get_byid($iduser)->row();
             erros_validacao();
@@ -174,6 +179,7 @@ switch ($tela):
         if(is_admin(TRUE)==TRUE) {
             $query = $this->usuarios->get_byid($iduser)->row();
             erros_validacao();
+            echo '<p>'.breadcrumb().'</p>';
             get_msg('msgok');
             echo form_open(current_url(), array('class' => 'custom'));
             echo form_fieldset('Alterar senha', array('class' => 'fieldset'));

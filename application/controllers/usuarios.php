@@ -15,7 +15,7 @@ class Usuarios extends  CI_Controller{
     }
 
     public function index(){
-        $this->load->view('');
+        $this->gerenciar();
     }
 
     //valida o login
@@ -25,6 +25,7 @@ class Usuarios extends  CI_Controller{
         if($this->form_validation->run()):
             $usuario = $this->input->post('usuario',true);
             $senha  = md5($this->input->post('senha',true));
+            $redirect = $this->input->post('redirect',true);
             if($this->usuarios->do_login($usuario,$senha)):
                 $query = $this->usuarios->get_bylogin($usuario)->row();
                 $dados = array(
@@ -34,7 +35,11 @@ class Usuarios extends  CI_Controller{
                     'user_logado'=>TRUE
                 );
                 $this->session->set_userdata($dados);
-                redirect('painel');
+                if($redirect != NULL) {
+                    redirect($redirect);
+                }else {
+                    redirect('painel');
+                }
             else:
                 set_msg('errologin','Usuário/Senha incorreto','erro');
                 redirect('usuarios/login');

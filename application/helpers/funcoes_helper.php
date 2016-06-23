@@ -127,6 +127,7 @@ function esta_logado($redir=true){
     $user_status = $CI->session->userdata('user_logado');
     if(!isset($user_status) || $user_status !=TRUE):
         if($redir):
+            $CI->session->set_userdata(array('redir_para'=> current_url()));
             set_msg('errologin', 'Acesso restrito faça login antes de prosseguir', 'erro');
             redirect('usuarios/login');
         else:
@@ -189,4 +190,23 @@ function is_admin($set_msg=FALSE){
         return false;
     }
     return true;
+}
+
+function breadcrumb(){
+    $CI =& get_instance();
+    $CI->load->helper('url');
+    $classe = ucfirst($CI->router->class);
+    if($classe == 'Painel'){
+        $classe = anchor($CI->router->class,'Inicio');
+    }else{
+        $classe = anchor($CI->router->class,$classe);
+    }
+    $metodo = ucwords(str_replace('_',' ',$CI->router->method));
+    if($metodo && $metodo != 'Index'){
+        $metodo = "&raquo;".anchor($CI->router->class."/".$CI->router->method,$metodo);
+    }else{
+        $metodo ='';
+    }
+    return "Sua localização: ". anchor('painel','Painel').'&raquo;'.$classe.$metodo;
+
 }
